@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "telegram-topic-notify"
+version = "0.1.0"
+description = "CLI tool for sending Telegram notifications in private-chat topics"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "GitHub Copilot CLI" }]
+dependencies = [
+    "httpx>=0.28.1",
+    "mcp[cli]>=1.2.0",
+    "pydantic>=2.12.0",
+    "python-dotenv>=1.2.2",
+]
+
+[project.scripts]
+telegram-topic-notify = "telegram_topic_notify.cli:main"
+telegram-topic-notify-mcp = "telegram_topic_notify.mcp_server:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["telegram_topic_notify*"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]
