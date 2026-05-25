@@ -46,8 +46,9 @@ async def test_mcp_lists_ask_user_tool() -> None:
         tools = await session.list_tools()
 
     tool = next(tool for tool in tools.tools if tool.name == "ask_user")
-    assert "询问用户一个问题" in (tool.description or "")
-    assert "question" in tool.inputSchema["properties"]
+    assert tool.description == "询问用户一个问题并返回回复。"
+    assert tool.inputSchema["required"] == ["question"]
+    assert list(tool.inputSchema["properties"].keys()) == ["question"]
 
 
 @pytest.mark.anyio
@@ -58,8 +59,7 @@ async def test_mcp_tool_returns_structured_reply(monkeypatch: pytest.MonkeyPatch
         result = await session.call_tool("ask_user", {"question": "需要更多上下文吗？"})
 
     assert result.isError is False
-    assert result.structuredContent["reply_text"] == "reply:需要更多上下文吗？"
-    assert result.structuredContent["thread_id"] == 12345
+    assert result.structuredContent == {"reply_text": "reply:需要更多上下文吗？"}
     text_block = next(content for content in result.content if isinstance(content, types.TextContent))
     assert "reply:需要更多上下文吗？" in text_block.text
 

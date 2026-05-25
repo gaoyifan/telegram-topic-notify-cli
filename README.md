@@ -82,10 +82,7 @@ uv run pytest
 uv run telegram-topic-notify-mcp
 ```
 
-暴露的核心工具是 `ask_user`，它的作用是：
-
-- **询问用户一个问题，并等待用户回复**
-- 适合用来澄清需求、确认选择、索取补充信息
+暴露的核心工具是 `ask_user`：**询问用户一个问题，并返回用户回复。**
 
 示例 Cursor/通用 MCP 配置：
 
