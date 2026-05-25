@@ -17,6 +17,9 @@ dependencies = [
     "python-dotenv>=1.2.2",
 ]
 
+[project.urls]
+Repository = "https://github.com/gaoyifan/telegram-topic-notify-cli"
+
 [project.scripts]
 telegram-topic-notify = "telegram_topic_notify.cli:main"
 telegram-topic-notify-mcp = "telegram_topic_notify.mcp_server:main"

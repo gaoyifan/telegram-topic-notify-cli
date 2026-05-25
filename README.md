@@ -39,6 +39,13 @@ export TELEGRAM_USER_ID=123456789
 uv run telegram-topic-notify "请回复 OK"
 ```
 
+现在仓库已公开，也支持直接通过 `uvx` 从 GitHub 运行：
+
+```bash
+uvx --from git+https://github.com/gaoyifan/telegram-topic-notify-cli \
+  telegram-topic-notify "请回复 OK"
+```
+
 项目根目录已支持自动读取 `.env`，所以本地开发时可以直接：
 
 ```bash
@@ -82,6 +89,13 @@ uv run pytest
 uv run telegram-topic-notify-mcp
 ```
 
+也可以直接通过 `uvx` 从 GitHub 启动：
+
+```bash
+uvx --from git+https://github.com/gaoyifan/telegram-topic-notify-cli \
+  telegram-topic-notify-mcp
+```
+
 暴露的核心工具是 `ask_user`：**询问用户一个问题，并返回用户回复。**
 
 示例 Cursor/通用 MCP 配置：
@@ -90,11 +104,10 @@ uv run telegram-topic-notify-mcp
 {
   "mcpServers": {
     "telegram-topic-notify": {
-      "command": "uv",
+      "command": "uvx",
       "args": [
-        "--directory",
-        "/home/yifan/telegram-notify-cli",
-        "run",
+        "--from",
+        "git+https://github.com/gaoyifan/telegram-topic-notify-cli",
         "telegram-topic-notify-mcp"
       ]
     }
