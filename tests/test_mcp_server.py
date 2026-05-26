@@ -30,11 +30,11 @@ def set_fake_env(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
 
 def fake_reply(text: str) -> ReplyRecord:
     return ReplyRecord(
-        update_id=321,
         chat_id=123456789,
-        thread_id=12345,
+        topic_id=12345,
         message_id=67890,
         from_user_id=123456789,
+        reply_to_message_id=12345,
         text=text,
         raw_json=json.dumps({"text": text}, ensure_ascii=False),
     )
@@ -53,7 +53,10 @@ async def test_mcp_lists_ask_user_tool() -> None:
 
 @pytest.mark.anyio
 async def test_mcp_tool_returns_structured_reply(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(mcp_server, "ask_user_via_telegram", lambda question, **_: fake_reply(f"reply:{question}"))
+    async def fake(question: str, **_: object) -> ReplyRecord:
+        return fake_reply(f"reply:{question}")
+
+    monkeypatch.setattr(mcp_server, "ask_user_via_telegram_async", fake)
 
     async with create_connected_server_and_client_session(mcp_server.mcp, raise_exceptions=True) as session:
         result = await session.call_tool("ask_user", {"question": "需要更多上下文吗？"})
@@ -71,18 +74,18 @@ import json
 import telegram_topic_notify.mcp_server as server
 from telegram_topic_notify.cli import ReplyRecord
 
-def fake(question, **kwargs):
+async def fake(question, **kwargs):
     return ReplyRecord(
-        update_id=7,
         chat_id=123456789,
-        thread_id=7001,
+        topic_id=7001,
         message_id=8002,
         from_user_id=123456789,
+        reply_to_message_id=7001,
         text=f"stdio:{question}",
         raw_json=json.dumps({"text": f"stdio:{question}"}, ensure_ascii=False),
     )
 
-server.ask_user_via_telegram = fake
+server.ask_user_via_telegram_async = fake
 server.main()
 """.strip()
 
@@ -109,10 +112,10 @@ server.main()
 
 @pytest.mark.anyio
 async def test_mcp_tool_reports_execution_errors(monkeypatch: pytest.MonkeyPatch) -> None:
-    def fail(question: str, **_: object) -> ReplyRecord:
+    async def fail(question: str, **_: object) -> ReplyRecord:
         raise TelegramNotifyError(f"failed:{question}")
 
-    monkeypatch.setattr(mcp_server, "ask_user_via_telegram", fail)
+    monkeypatch.setattr(mcp_server, "ask_user_via_telegram_async", fail)
 
     async with create_connected_server_and_client_session(mcp_server.mcp, raise_exceptions=False) as session:
         result = await session.call_tool("ask_user", {"question": "需要确认失败路径"})

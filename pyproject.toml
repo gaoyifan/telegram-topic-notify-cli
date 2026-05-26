@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "telegram-topic-notify"
 version = "0.1.0"
-description = "CLI tool for sending Telegram notifications in private-chat topics"
+description = "CLI tool for sending Telegram notifications to private-chat topics via Telethon"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
@@ -15,6 +15,7 @@ dependencies = [
     "mcp[cli]>=1.2.0",
     "pydantic>=2.12.0",
     "python-dotenv>=1.2.2",
+    "telethon>=1.43.2",
 ]
 
 [project.urls]
