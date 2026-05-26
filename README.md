@@ -81,7 +81,7 @@ printf '构建完成，请确认。' | uv run telegram-topic-notify
 
 ## 常用参数
 
-- `--timeout`：最长等待回复秒数，默认 `60`
+- `--timeout`：最长等待回复秒数，默认 `300`（5 分钟）
 - `--api-id` / `--api-hash`：覆盖 `TG_API_ID` / `TG_API_HASH`
 - `--topic-prefix`：生成 topic 名称时使用的前缀，默认 `notify`
 - `--session-name`：指定当前 worker 的持久化 Telethon session 名称

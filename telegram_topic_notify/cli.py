@@ -21,7 +21,7 @@ from telethon import Button, TelegramClient, errors, events, functions, types
 load_dotenv()
 
 
-DEFAULT_TIMEOUT_SECONDS = 60
+DEFAULT_TIMEOUT_SECONDS = 300
 DEFAULT_TOPIC_PREFIX = "notify"
 SESSION_DIR_APP_NAME = "telegram-topic-notify"
 DEFAULT_FORCE_REPLY_PLACEHOLDER = "Reply inside this topic"
